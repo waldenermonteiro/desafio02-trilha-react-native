@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Alert, KeyboardAvoidingView, Platform } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
 import { RFValue } from "react-native-responsive-fontsize";
 import * as Yup from "yup";
@@ -26,8 +27,7 @@ const schema = Yup.object().shape({
   password: Yup.string().required("Senha é obrigatória!"),
 });
 
-export function RegisterLoginData({ navigation }) {
-
+export function RegisterLoginData() {
   const {
     control,
     handleSubmit,
@@ -35,6 +35,8 @@ export function RegisterLoginData({ navigation }) {
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  const { navigate } = useNavigation();
 
   async function handleRegister(formData: FormData) {
     const newLoginData = {
@@ -49,12 +51,10 @@ export function RegisterLoginData({ navigation }) {
     const newData = JSON.stringify([...dataStorage, newLoginData]);
     await AsyncStorage.setItem(dataKey, newData);
 
-    Alert.alert("Sucesso", "Dados cadastrados com sucesso",   [
-
-      { text: "OK", onPress: () => navigation.navigate("Home") }
-    ])
-
-  
+    Alert.alert("Sucesso", "Dados cadastrados com sucesso", [{ text: "OK", onPress: () => navigate("Home") }]);
+    setTimeout(() => {
+      navigate("Home");
+    }, 3000);
   }
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : undefined} enabled>
