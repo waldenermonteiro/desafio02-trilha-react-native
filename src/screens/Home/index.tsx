@@ -35,8 +35,9 @@ export function Home() {
   function handleFilterLoginData() {
     if (searchText !== "") {
       const dataFiltered: LoginDataProps[] = data.filter((item: LoginDataProps) => {
-        if(item.service_name.includes(searchText)){
-          return item
+        const isValid = item.service_name.toLowerCase().includes(searchText.toLowerCase());
+        if (isValid) {
+          return item;
         }
       });
 
@@ -47,6 +48,9 @@ export function Home() {
   }
 
   function handleChangeInputText(text: string) {
+    if (!text) {
+      setSearchListData(data);
+    }
     setSearchText(text);
   }
 
