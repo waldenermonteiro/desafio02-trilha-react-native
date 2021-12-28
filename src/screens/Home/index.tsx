@@ -34,7 +34,11 @@ export function Home() {
 
   function handleFilterLoginData() {
     if (searchText !== "") {
-      const dataFiltered: LoginDataProps[] = data.filter((item: LoginDataProps) => item.service_name === searchText);
+      const dataFiltered: LoginDataProps[] = data.filter((item: LoginDataProps) => {
+        if(item.service_name.includes(searchText)){
+          return item
+        }
+      });
 
       setSearchListData(dataFiltered);
     } else {
